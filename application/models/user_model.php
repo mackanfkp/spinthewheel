@@ -58,7 +58,7 @@ class User_model extends MY_Model {
 					}
 				}
 
-			// If update - not really implemented yet...
+			// If update - not really tested yet - as we don't have any update funtionality...
 			} else {
 				$this->db->set($data);
 				$this->db->where('id', $id);
