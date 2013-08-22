@@ -16,12 +16,18 @@ class User_model extends MY_Model {
 	 */
 	protected $dbtable = 'user';
 
+	/**
+	 * Construct the object
+	 */
 	public function __construct () {
 		parent::__construct();
 	}
 
 	/**
 	 * Save the user
+	 *
+	 * @param mixed $values
+	 * @return object|false
 	 */
 	public function save ($values = null) {
 		$retval = false;
@@ -118,6 +124,9 @@ class User_model extends MY_Model {
 
 	/**
 	 * Spin the wheel
+	 *
+	 * @param double $bet
+	 * @return array
 	 */
 	public function spin ($bet) {
 		$retval = array();
@@ -239,6 +248,8 @@ class User_model extends MY_Model {
 
 	/**
 	 * Get the realmoney wallet
+	 *
+	 * @return object
 	 */
 	public function getRealmoneyWallet () {
 		$this->loadWallets();
@@ -252,6 +263,8 @@ class User_model extends MY_Model {
 
 	/**
 	 * Get the bonus wallets
+	 *
+	 * @return array
 	 */
 	public function getBonusWallets () {
 		$this->loadWallets();
@@ -271,6 +284,8 @@ class User_model extends MY_Model {
 
 	/**
 	 * Get the current realmoney wallet
+	 *
+	 * @return object
 	 */
 	public function getCurrentBonusWallet () {
 		if ($wallets = $this->getBonusWallets()) {
@@ -285,7 +300,7 @@ class User_model extends MY_Model {
 	}
 
 	/**
-	 * Load wallets
+	 * Load wallets - internally cached
 	 */
 	protected function loadWallets () {
 		if ($this->has('__wallets') || ! ($id = (int) $this->get('id'))) {
@@ -338,6 +353,9 @@ class User_model extends MY_Model {
 
 	/**
 	 * Add a login bonus
+	 *
+	 * @param object $bonus
+	 * @return bool
 	 */
 	public function addLoginBonus ($bonus) {
 		$retval = false;
@@ -359,6 +377,10 @@ class User_model extends MY_Model {
 
 	/**
 	 * Add a deposit bonus
+	 *
+	 * @param object $bonus
+	 * @param double $amount
+	 * @return bool
 	 */
 	public function addDepositBonus ($bonus, $amount) {
 		if (! is_object($bonus)) {
@@ -382,7 +404,11 @@ class User_model extends MY_Model {
 	}
 
 	/**
-	 * Do add the bonus
+	 * Really add the bonus to database
+	 *
+	 * @param object $bonus
+	 * @param double $amount
+	 * @return bool
 	 */
 	protected function addBonus ($bonus, $amount) {
 		$retval = false;
@@ -427,6 +453,8 @@ class User_model extends MY_Model {
 
 	/**
 	 * Check if user is logged in
+	 *
+	 * @return int
 	 */
 	public function isLoggedIn () {
 		return $this->session->userdata('id');
@@ -434,6 +462,10 @@ class User_model extends MY_Model {
 
 	/**
 	 * Login the user
+	 *
+	 * @param string $username
+	 * @param string $password
+	 * @return bool
 	 */
 	public function login ($username, $password) {
 		$query = $this->db->get_where('user', array(
@@ -453,6 +485,8 @@ class User_model extends MY_Model {
 
 	/**
 	 * Logout the user
+	 *
+	 * @return bool
 	 */
 	public function logout () {
 		$this->session->unset_userdata('id');

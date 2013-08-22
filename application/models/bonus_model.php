@@ -16,12 +16,18 @@ class Bonus_model extends MY_Model {
 	 */
 	protected $dbtable = 'bonus';
 
+	/**
+	 * Construct the object
+	 */
 	public function __construct () {
 		parent::__construct();
 	}
 
 	/**
 	 * Save the bonus
+	 *
+	 * @param mixed $values
+	 * @return object|false
 	 */
 	public function save ($values = null) {
 		$retval = false;

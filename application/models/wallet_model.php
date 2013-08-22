@@ -16,12 +16,18 @@ class Wallet_model extends MY_Model {
 	 */
 	protected $dbtable = 'wallet';
 
+	/**
+	 * Construct the object
+	 */
 	public function __construct () {
 		parent::__construct();
 	}
 
 	/**
 	 * Save the wallet
+	 *
+	 * @param mixed $values
+	 * @return object|false
 	 */
 	public function save ($values = null) {
 		$retval = false;
@@ -63,6 +69,10 @@ class Wallet_model extends MY_Model {
 
 	/**
 	 * Create a wallet connected to a user
+	 *
+	 * @param int $user_id
+	 * @param int $bonus_id
+	 * @return object|false
 	 */
 	public function createUserWallet ($user_id, $bonus_id = 0) {
 		$retval = false;
