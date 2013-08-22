@@ -89,12 +89,10 @@ class User_model extends MY_Model {
 		$sum_rm = $rm->get('current_value');
 		$sum_bm = $bm ? $bm->get('current_value') : 0;
 
-
 		$retval['msg'][] = sprintf('You bet &euro;%.2f.', $bet);
 		$retval['msg'][] = $success
 			? sprintf('You won &euro;%s.', $winning)
 			: sprintf('You lost.');
-
 
 		// Not enough funds
 		if ($bet > $sum_rm + $sum_bm) {
@@ -326,7 +324,8 @@ class User_model extends MY_Model {
 			}
 		} else {
 			$realmoney = $this->User_model->getRealmoneyWallet();
-			$realmoney->set('current_value', $realmoney->get('current_value') + $save['current_value']);
+			$realmoney->set('current_value',
+					$realmoney->get('current_value') + $save['current_value']);
 			if ($realmoney->save()) {
 
 				$save['current_value'] = 0;
@@ -379,74 +378,3 @@ class User_model extends MY_Model {
 		return true;
 	}
 }
-
-
-/* WORKFLOW - Add bonus
-
-	if trigger == DEPOSIT
-		if amount <= 0
-			FAIL: No money deposited
-		else
-
-			- Add a new wallet connected to user and bonus_id
-
-			if value_of_reward_type == PERCENT
-				- Add calculated amount to the wallet
-			elseif value_of_reward_type == EURO
-				- Add amount to wallet
-			endif
-
-			if reward_wallet_type == REALMONEY
-				- move wallet amount to my realmoney wallet
-				- set wallet depleted
-
-			elseif reward_wallet_type == BONUS
-
-				Do noting more...
-
-			endif
-
-		endif
-
-	elseif trigger == LOGIN
-		if value_of_reward_type == PERCENT
-
-			FAIL: Cannot add PERCENT on LOGIN
-
-		elseif value_of_reward_type == EURO
-
-			- Add a new wallet connected to user and bonus_id
-			- Add amount to the wallet
-
-			if reward_wallet_type == REALMONEY
-				- move wallet amount to my realmoney wallet
-				- set wallet depleted
-
-			elseif reward_wallet_type == BONUS
-
-				Do nothing more...
-
-			endif
-
-			
-		endif
-	endif
-	*/
-
-/**
- * Database table
-
-CREATE TABLE IF NOT EXISTS `user` (
-`id` BIGINT NOT NULL AUTO_INCREMENT,
-`username` VARCHAR(255) NOT NULL,
-`password` VARCHAR(40) NOT NULL,
-`firstname` VARCHAR(50) NOT NULL,
-`lastname` VARCHAR(50) NOT NULL,
-`age` INT NOT NULL,
-`gender` ENUM('M', 'F') NOT NULL DEFAULT 'M',
-
-PRIMARY KEY (`id`),
-KEY `idx_lastname ON user(lastname(4));
-UNIQUE KEY `uni_username` (`username`)
-) ENGINE=MyISAM DEFAULT CHARACTER SET = utf8 DEFAULT COLLATE = utf8_general_ci;
- */

@@ -83,34 +83,3 @@ class Wallet_model extends MY_Model {
 		return $retval;
 	}
 }
-
-
-/**
- * Database wallet
-
-CREATE TABLE IF NOT EXISTS `wallet` (
-`id` BIGINT NOT NULL AUTO_INCREMENT,
-
-`user_id` BIGINT NOT NULL,
-`bonus_id` BIGINT NOT NULL default 0,
-
-`initial_value` double NOT NULL DEFAULT '0.0',
-`current_value` double NOT NULL DEFAULT '0.0',
-`wagered_value` double NOT NULL DEFAULT '0.0',
-
-`date_create` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-`date_update` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-`status` ENUM('ACTIVE', 'DEPLETED') NOT NULL DEFAULT 'ACTIVE',
-
-PRIMARY KEY (`id`),
-UNIQUE KEY `user_id_bonus_id` (`user_id`, `bonus_id`)
-) ENGINE=MyISAM DEFAULT CHARACTER SET = utf8 DEFAULT COLLATE = utf8_general_ci;
-
-// DO WE NEED THESE REALLY??
-`origin` ENUM('WALLET', 'BONUS') DEFAULT 'WALLET',
-`currency` ENUM('BNS', 'EUR') NOT NULL DEFAULT 'BNS',
-
-
-
- */
