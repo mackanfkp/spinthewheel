@@ -20,7 +20,6 @@ class Game extends CI_Controller {
 		$this->load->model('User_model');
 		$this->load->model('Bonus_model');
 		$this->load->model('Wallet_model');
-
 		$this->User_model->loadByID($id);
 	}
 
