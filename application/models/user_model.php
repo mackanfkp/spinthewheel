@@ -74,6 +74,49 @@ class User_model extends MY_Model {
 	}
 
 	/**
+	 * WORKFLOW ON Spin the Wheel
+
+	if bet > realmoney + bonus
+		- Nothing to bet with
+	elseif bet <= realmoney
+		- calculate new current value for real money wallet
+
+		if have bonus
+			if bonus wagering is done
+				- update bonus status
+				- "reset" the bonus wallet
+				- transfer the rest of money to realmoney wallet
+			else
+				- update bonus wagering amount
+			endif
+		endif
+
+		- set new current value to real money wallet
+
+	elsif bet <= realmoney + bonusmoney
+
+		if have bonus : which we do here...
+			- calculate new current value for bonus wallet
+			- set new current value on bonus wallet up til initial bonus value
+
+			if there is a rest amount
+				- add it to the current value of the real money wallet
+			endif
+
+			if bonus wagering is done
+				- update bonus status
+				- "reset" the bonus wallet
+				- transfer the rest of money to realmoney wallet
+			else
+				- update bonus wagering amount
+			endif
+		endif;
+
+		- set new current value to real money wallet
+	endif
+	*/
+
+	/**
 	 * Spin the wheel
 	 */
 	public function spin ($bet) {
@@ -252,6 +295,46 @@ class User_model extends MY_Model {
 		$this->set('__wallets', $this->Wallet_model->loadCollection(array('user_id' => $id)));
 	}
 
+
+	/**
+	 * WORKFLOW ON Add bonus
+
+	if trigger == DEPOSIT
+		if amount <= 0
+			FAIL: No money deposited
+		else
+			- Add a new wallet connected to user and bonus_id
+
+			if value_of_reward_type == PERCENT
+				- Add calculated amount to the wallet
+			elseif value_of_reward_type == EURO
+				- Add amount to wallet
+			endif
+
+			if reward_wallet_type == REALMONEY
+				- move wallet amount to my realmoney wallet
+				- set wallet depleted
+			elseif reward_wallet_type == BONUS
+				Do noting more...
+			endif
+		endif
+
+	elseif trigger == LOGIN
+		if value_of_reward_type == PERCENT
+			FAIL: Cannot add PERCENT on LOGIN
+		elseif value_of_reward_type == EURO
+			- Add a new wallet connected to user and bonus_id
+			- Add amount to the wallet
+
+			if reward_wallet_type == REALMONEY
+				- move wallet amount to my realmoney wallet
+				- set wallet depleted
+			elseif reward_wallet_type == BONUS
+				Do nothing more...
+			endif
+		endif
+	endif
+	*/
 
 	/**
 	 * Add a login bonus
